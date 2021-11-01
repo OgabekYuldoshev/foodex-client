@@ -8,9 +8,6 @@
           <v-spacer></v-spacer>
           <p>{{ $constants.normalizer(food.price) }} sum</p>
         </div>
-      </v-card-text>
-      <v-divider ></v-divider>
-      <v-card-actions>
         <v-rating
           :value="4"
           color="amber"
@@ -19,9 +16,13 @@
           readonly
           size="14"
         ></v-rating>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-        fab x-small
+          fab
+          x-small
           v-show="!$constants.inCard(food)"
           @click="addToCart(food, 1)"
           color="green"
@@ -29,13 +30,17 @@
           <v-icon>mdi-cart</v-icon>
         </v-btn>
         <div v-show="$constants.inCard(food)">
-          <v-btn fab x-small
+          <v-btn
+            fab
+            x-small
             @click="$store.commit('user/removeFromCart', food)"
             color="red"
           >
             <v-icon>mdi-minus</v-icon>
           </v-btn>
-          <span class="mx-3">{{ $constants.inCard(food) && $constants.inCard(food).qty }}</span>
+          <span class="mx-3">{{
+            $constants.inCard(food) && $constants.inCard(food).qty
+          }}</span>
           <v-btn fab x-small @click="addToCart(food, 1)" color="green">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
