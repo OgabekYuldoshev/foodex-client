@@ -11,6 +11,9 @@
 <script>
 export default {
   name: "Foods",
+  async created() {
+    await this.$api.foods.getFoods();
+  },
   async fetch() {
     await this.$api.foods.getFoods();
   },
