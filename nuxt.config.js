@@ -36,8 +36,8 @@ export default {
 
   axios: {
     baseUrl: `https://foodexx.herokuapp.com/api/v2`,
+    // baseUrl: `http://localhost:8080/api/v2`,
   },
-
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -66,7 +66,6 @@ export default {
     ],
   },
 
-  
   toast: {
     position: "top-right",
     duration: 3000,

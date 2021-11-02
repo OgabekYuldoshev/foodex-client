@@ -33,9 +33,7 @@
                   <v-btn
                     small
                     icon
-                    @click="
-                      $store.commit('user/addToCart', item)
-                    "
+                    @click="$store.commit('user/addToCart', item)"
                     color="green"
                   >
                     <v-icon>mdi-plus</v-icon>
@@ -58,10 +56,21 @@
     </div>
     <v-spacer />
     <div>
+      <h3 class="mb-4" v-show="$store.state.user.items.length != 0">
+        Total:
+        {{
+          $constants.normalizer(
+            $store.state.user.items.reduce((t, c) => {
+              return t + c.food.price * c.qty;
+            }, 0)
+          )
+        }} sum
+      </h3>
       <v-btn
         :disabled="$store.state.user.items.length == 0"
         color="green"
         large
+        @click="$api.orders.makeOrder(2, $store.state.user.items)"
         width="100%"
       >
         order
