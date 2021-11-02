@@ -9,7 +9,7 @@ export default (axios, store, toast) => ({
         return t + c.food.price * c.qty;
       }, 0);
       axios
-        .post(`/order`, { table: table, foods: data, total: total })
+        .post(`/order`, { table: table, deller:'617aaecd6e312f0e4baf6cbd', foods: data, total: total })
         .then((res) => {
           toast.success("Success");
           localStorage.removeItem('cart')
