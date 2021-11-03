@@ -4,7 +4,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: "%s - client",
-    title: "client",
+    title: "FoodEX",
     htmlAttrs: {
       lang: "en",
     },
@@ -18,7 +18,7 @@ export default {
   },
 
   // server: {
-  //   host: "192.168.1.6",
+  //   host: "192.168.1.5",
   //   port: 8000, // default: 3000
   // },
   // Global CSS: https://go.nuxtjs.dev/config-css

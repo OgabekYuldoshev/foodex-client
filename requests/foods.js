@@ -1,7 +1,7 @@
 export default (axios, store, toast) => ({
-  getFoods(type) {
+  getFoods(id) {
     axios
-      .get(`/foods/617aaecd6e312f0e4baf6cbd`)
+      .get(`/foods/${id}`)
       .then((res) => {
         store.commit("foods/foods", res.data);
       })
@@ -9,5 +9,24 @@ export default (axios, store, toast) => ({
         toast.error(error);
       });
   },
-  });
-  
+  getFoodsByType(id, type) {
+    axios
+      .get(`/foods/${id}/${type}`)
+      .then((res) => {
+        store.commit("foods/foods", res.data);
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  },
+  getFoodTypes() {
+    axios
+      .get(`/food/types`)
+      .then((res) => {
+        store.commit("foods/foodTypes", res.data);
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  },
+});

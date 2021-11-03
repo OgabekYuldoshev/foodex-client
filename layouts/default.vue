@@ -8,18 +8,24 @@
       app
     >
       <v-list>
+        <v-list-item :to="$route.path" @click="back()" router exact>
+          <v-list-item-content>
+            <v-list-item-title> All Foods </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in $store.state.foods.types"
           :key="i"
-          :to="item.to"
+          @click="selectQuery(item.slug)"
+          :to="$route.path + '?q=' + item.slug"
           router
           exact
         >
-          <v-list-item-action>
+          <!-- <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
+          </v-list-item-action> -->
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -87,11 +93,27 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "FOODEX Menu",
+      title: "Today's Menu",
     };
   },
   mounted() {
-    this.$store.commit('user/checkLocalStorage')
+    this.$store.commit("user/checkLocalStorage");
+  },
+  async created() {
+    if (this.$route.query.q != undefined) {
+      await this.$api.foods.getFoodsByType(
+        this.$route.params.id,
+        this.$route.query.q
+      );
+    }
+  },
+  methods: {
+    async selectQuery(type) {
+      await this.$api.foods.getFoodsByType(this.$route.params.id, type);
+    },
+    async back() {
+      await this.$api.foods.getFoods(this.$route.params.id);
+    },
   },
 };
 </script>

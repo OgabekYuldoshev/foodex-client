@@ -11,11 +11,17 @@
 <script>
 export default {
   name: "Foods",
+  data() {
+    return {};
+  },
   async created() {
-    await this.$api.foods.getFoods();
+    this.$fetch();
+    if (this.$route.query.q == undefined) {
+      await this.$api.foods.getFoods(this.$route.params.id);
+    }
   },
   async fetch() {
-    await this.$api.foods.getFoods();
+    await this.$api.foods.getFoodTypes();
   },
 };
 </script>

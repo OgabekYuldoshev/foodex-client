@@ -1,5 +1,5 @@
 export default (axios, store, toast) => ({
-  makeOrder(table, cart) {
+  makeOrder(table, deller, cart) {
     if (cart) {
       let data = [];
       cart.map((item) => {
@@ -9,10 +9,15 @@ export default (axios, store, toast) => ({
         return t + c.food.price * c.qty;
       }, 0);
       axios
-        .post(`/order`, { table: table, deller:'617aaecd6e312f0e4baf6cbd', foods: data, total: total })
+        .post(`/order`, {
+          table: table,
+          deller: deller,
+          foods: data,
+          total: total,
+        })
         .then((res) => {
+          store.commit("user/clearLocalStorage");
           toast.success("Success");
-          localStorage.removeItem('cart')
         })
         .catch((error) => {
           toast.error(error);

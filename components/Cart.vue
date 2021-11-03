@@ -64,13 +64,20 @@
               return t + c.food.price * c.qty;
             }, 0)
           )
-        }} sum
+        }}
+        sum
       </h3>
       <v-btn
         :disabled="$store.state.user.items.length == 0"
         color="green"
         large
-        @click="$api.orders.makeOrder(2, $store.state.user.items)"
+        @click="
+          $api.orders.makeOrder(
+            $route.params.table,
+            $route.params.id,
+            $store.state.user.items
+          )
+        "
         width="100%"
       >
         order
