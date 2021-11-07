@@ -18,7 +18,7 @@ export default {
   },
 
   // server: {
-  //   host: "192.168.1.5",
+  //   host: "192.168.1.4",
   //   port: 8000, // default: 3000
   // },
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -32,6 +32,7 @@ export default {
     {
       src: "~/plugins/constants.js",
     },
+    { src: "@/plugins/qr.js", mode: "client" },
   ],
 
   axios: {
