@@ -7,19 +7,39 @@
     </div>
     <div class="d-flex flex-column align-center mt-10">
       <qrcode-stream
+        :style="`border: 2px solid ${!result ? 'red' : 'green'};`"
+        id="camera"
+        :camera="camera"
+        :track="paintOutline"
+        @decode="onDecode"
+        @init="onInit"
+      >
+        <div v-if="validationSuccess" class="validation-success">
+          QR Code is validated !, you need to go to menu!
+        </div>
+
+        <div v-if="validationFailure" class="validation-failure">
+          QR Code is not validated !, Please try again ?
+        </div>
+      </qrcode-stream>
+      <!-- <qrcode-stream
         :style="`border: 2px solid ${!result.length ? 'red' : 'green'};`"
         id="camera"
         @decode="onDecode"
         :track="paintOutline"
         @init="onInit"
-      ></qrcode-stream>
+      ></qrcode-stream> -->
       <v-btn
+        v-if="!tryAgain"
         @click="routeGo"
-        :disabled="!result.length"
+        :disabled="!result"
         class="mt-5"
         color="blue"
       >
         Go To Menu
+      </v-btn>
+      <v-btn v-else @click="turnCameraOn" class="mt-5" color="red">
+        Try Again
       </v-btn>
       <span style="color: red" class="text-center mt-5">{{ error }}</span>
     </div>
@@ -32,17 +52,36 @@ export default {
 
   data() {
     return {
-      result: "",
+      result: null,
       error: "",
+      camera: "auto",
+      tryAgain: false,
+      isValid: undefined,
     };
   },
 
+  computed: {
+    validationSuccess() {
+      return this.isValid === true;
+    },
+
+    validationFailure() {
+      return this.isValid === false;
+    },
+  },
+
   methods: {
-    onDecode(result) {
-      let urlArr = result.split("/")[2];
+    async onDecode(content) {
+      let urlArr = content.split("/")[2];
       if (window.location.hostname == urlArr) {
-        this.result = result;
+        this.turnCameraOff();
+        this.isValid = true;
+        this.result = content;
+        this.$toast.success("Your QR Code is Validated!");
       } else {
+        this.tryAgain = true;
+        this.isValid = false;
+        this.turnCameraOff();
         this.errorShow("QR code not validate, Please try again :(", "error");
       }
     },
@@ -63,9 +102,7 @@ export default {
     paintOutline(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
         const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
-
         ctx.strokeStyle = "red";
-
         ctx.beginPath();
         ctx.moveTo(firstPoint.x, firstPoint.y);
         for (const { x, y } of otherPoints) {
@@ -79,6 +116,16 @@ export default {
     routeGo() {
       window.location.href = this.result;
     },
+    turnCameraOn() {
+      this.isValid = undefined;
+      this.tryAgain = false;
+      this.camera = "auto";
+    },
+
+    turnCameraOff() {
+      this.camera = "off";
+    },
+
     async onInit(promise) {
       try {
         await promise;
@@ -125,5 +172,25 @@ export default {
   height: 400px;
   position: relative;
   margin: auto;
+}
+.validation-success,
+.validation-failure {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+.validation-success {
+  color: green;
+}
+.validation-failure {
+  color: red;
 }
 </style>
