@@ -1,14 +1,29 @@
 <template>
-  <qrcode-stream
-    id="camera"
-    @decode="onDecode"
-    :track="paintOutline"
-    @init="onInit"
-  >
-    <v-btn @click="routeGo" :disabled="!result.length" id="button" color="blue">
-      Go To Menu
-    </v-btn>
-  </qrcode-stream>
+  <div id="qr">
+    <div class="p-5">
+      <v-btn icon @click="$router.push('/')">
+        <v-icon size="30">mdi-arrow-u-left-top</v-icon>
+      </v-btn>
+    </div>
+    <div class="d-flex flex-column align-center mt-10">
+      <qrcode-stream
+        :style="`border: 2px solid ${!result.length ? 'red' : 'green'};`"
+        id="camera"
+        @decode="onDecode"
+        :track="paintOutline"
+        @init="onInit"
+      ></qrcode-stream>
+      <v-btn
+        @click="routeGo"
+        :disabled="!result.length"
+        class="mt-5"
+        color="blue"
+      >
+        Go To Menu
+      </v-btn>
+      <span style="color: red" class="text-center mt-5">{{ error }}</span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -18,12 +33,32 @@ export default {
   data() {
     return {
       result: "",
+      error: "",
     };
   },
 
   methods: {
     onDecode(result) {
-      this.result = result;
+      let urlArr = result.split("/")[2];
+      if (window.location.hostname == urlArr) {
+        this.result = result;
+      } else {
+        this.errorShow("QR code not validate, Please try again :(", "error");
+      }
+    },
+    errorShow(text, type) {
+      this.error = text;
+      switch (type) {
+        case "error":
+          setTimeout(() => {
+            this.error = "";
+          }, 3000);
+          break;
+        case "camera":
+          return this.error;
+        default:
+          break;
+      }
     },
     paintOutline(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
@@ -49,21 +84,33 @@ export default {
         await promise;
       } catch (error) {
         if (error.name === "NotAllowedError") {
-          this.$toast.error("ERROR: you need to grant camera access permission");
+          this.errorShow(
+            "ERROR: you need to grant camera access permission",
+            "camera"
+          );
         } else if (error.name === "NotFoundError") {
-          this.$toast.error("ERROR: no camera on this device");
+          this.errorShow("ERROR: no camera on this device", "camera");
         } else if (error.name === "NotSupportedError") {
-          this.$toast.error("ERROR: secure context required (HTTPS, localhost)");
+          this.errorShow(
+            "ERROR: secure context required (HTTPS, localhost)",
+            "camera"
+          );
         } else if (error.name === "NotReadableError") {
-          this.$toast.error("ERROR: is the camera already in use?");
+          this.errorShow("ERROR: is the camera already in use?", "camera");
         } else if (error.name === "OverconstrainedError") {
-          this.$toast.error("ERROR: installed cameras are not suitable");
+          this.errorShow("ERROR: installed cameras are not suitable", "camera");
         } else if (error.name === "StreamApiNotSupportedError") {
-          this.$toast.error("ERROR: Stream API is not supported in this browser");
+          this.errorShow(
+            "ERROR: Stream API is not supported in this browser",
+            "camera"
+          );
         } else if (error.name === "InsecureContextError") {
-          this.$toast.error(            "ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.");
+          this.errorShow(
+            "ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.",
+            "camera"
+          );
         } else {
-          this.$toast.error(`ERROR: Camera error (${error.name})`);
+          this.errorShow(`ERROR: Camera error (${error.name})`, "camera");
         }
       }
     },
@@ -73,13 +120,10 @@ export default {
 
 <style scoped>
 #camera {
-  width: 100%;
-  height: 100vh;
+  min-width: 200px;
+  max-width: 400px;
+  height: 400px;
   position: relative;
-}
-#button {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
+  margin: auto;
 }
 </style>
