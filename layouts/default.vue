@@ -66,7 +66,7 @@
       <Cart @click.native="right = !right" />
     </v-navigation-drawer>
     <v-footer app>
-      <span>&copy; Powered by <a href="/">Ogabek Yuldoshev</a></span>
+      <span>&copy; Created by <a href="https://yuldoshev.vercel.app/">Ogabek Yuldoshev</a></span>
     </v-footer>
   </v-app>
 </template>

@@ -59,7 +59,9 @@ export default {
       isValid: undefined,
     };
   },
-
+  mounted() {
+    this.camera = "auto";
+  },
   computed: {
     validationSuccess() {
       return this.isValid === true;
