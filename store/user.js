@@ -1,5 +1,6 @@
 export const state = () => ({
   items: [],
+  smsID:''
 });
 
 export const mutations = {
@@ -42,4 +43,8 @@ export const mutations = {
       state.items = cart;
     }
   },
+
+  smsID(state, data){
+    state.smsID = data
+  }
 };

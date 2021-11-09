@@ -37,7 +37,7 @@ export default {
 
   axios: {
     baseUrl: `https://foodexx.herokuapp.com/api/v2`,
-    // baseUrl: `http://localhost:8080/api/v2`,
+    // baseUrl: `http://192.168.1.4:8080/api/v2`,
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,5 +1,5 @@
 export default (axios, store, toast) => ({
-  makeOrder(table, deller, cart) {
+  makeOrder({number, code, table, deller, cart}) {
     if (cart) {
       let data = [];
       cart.map((item) => {
@@ -8,10 +8,12 @@ export default (axios, store, toast) => ({
       let total = cart.reduce((t, c) => {
         return t + c.food.price * c.qty;
       }, 0);
-      axios
-        .post(`/order`, {
+      if(store.state.user.smsID && code){
+        axios
+        .post(`/order?smsID=${store.state.user.smsID}&code=${code}`, {
           table: table,
           deller: deller,
+          number : number,
           foods: data,
           total: total,
         })
@@ -22,8 +24,24 @@ export default (axios, store, toast) => ({
         .catch((error) => {
           toast.error(error);
         });
+      } else {
+        toast.error("You need to verificate your phone number!")
+      }
     } else {
       toast.error("Your Cart is Empty");
     }
+  },
+  getCode(number) {
+    axios
+      .post(`/getCode`, {
+        number: number,
+      })
+      .then((res) => {
+        store.commit("user/smsID", res.data.serviceSid);
+        toast.success("Successfully sent your code!");
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
   },
 });
