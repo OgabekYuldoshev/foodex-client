@@ -1,6 +1,6 @@
 export default (ctx, inject) => {
   const factories = {
-    url: "https://foodexx.herokuapp.com/",
+    url: "https://foodex-api.herokuapp.com/",
     inCard: (item) => {
       let found = ctx.store.state.user.items.find((i) => {
         return i.food._id == item._id;

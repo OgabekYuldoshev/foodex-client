@@ -127,7 +127,7 @@
             <v-spacer></v-spacer>
             <v-btn color="red" @click="clearAndClose()"> Cancel </v-btn>
             <v-btn
-              :disabled="selectedType != null"
+              :disabled="selectedType == null"
               color="green"
               @click="submitOrder()"
             >

@@ -36,7 +36,7 @@ export default {
   ],
 
   axios: {
-    baseUrl: `https://foodexx.herokuapp.com/api/v2`,
+    baseUrl: `https://foodex-api.herokuapp.com/api/v2`,
     // baseUrl: `http://192.168.1.4:8080/api/v2`,
   },
 
