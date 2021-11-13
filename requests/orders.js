@@ -43,25 +43,21 @@ export default (axios, store, toast) => ({
       let total = cart.reduce((t, c) => {
         return t + c.food.price * c.qty;
       }, 0);
-      if (store.state.user.smsID && code) {
-        axios
-          .post(`/order_by_card`, {
-            table: table,
-            deller: deller,
-            number: number,
-            foods: data,
-            total: total,
-          })
-          .then((res) => {
-            store.commit("user/clearLocalStorage");
-            toast.success("Success");
-          })
-          .catch((error) => {
-            toast.error(error);
-          });
-      } else {
-        toast.error("You need to verificate your phone number!");
-      }
+      axios
+        .post(`/order_by_card`, {
+          table: table,
+          deller: deller,
+          number: number,
+          foods: data,
+          total: total,
+        })
+        .then((res) => {
+          store.commit("user/clearLocalStorage");
+          toast.success("Success");
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
     } else {
       toast.error("Your Cart is Empty");
     }
