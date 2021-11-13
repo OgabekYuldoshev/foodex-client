@@ -1,5 +1,5 @@
 export default (axios, store, toast) => ({
-  makeOrder({number, code, table, deller, cart}) {
+  makeOrderByHand({ number, code, table, deller, cart }) {
     if (cart) {
       let data = [];
       cart.map((item) => {
@@ -8,24 +8,59 @@ export default (axios, store, toast) => ({
       let total = cart.reduce((t, c) => {
         return t + c.food.price * c.qty;
       }, 0);
-      if(store.state.user.smsID && code){
+      if (store.state.user.smsID && code) {
         axios
-        .post(`/order?smsID=${store.state.user.smsID}&code=${code}`, {
-          table: table,
-          deller: deller,
-          number : number,
-          foods: data,
-          total: total,
-        })
-        .then((res) => {
-          store.commit("user/clearLocalStorage");
-          toast.success("Success");
-        })
-        .catch((error) => {
-          toast.error(error);
-        });
+          .post(
+            `/order_by_phone?smsID=${store.state.user.smsID}&code=${code}`,
+            {
+              table: table,
+              deller: deller,
+              number: number,
+              foods: data,
+              total: total,
+            }
+          )
+          .then((res) => {
+            store.commit("user/clearLocalStorage");
+            toast.success("Success");
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
       } else {
-        toast.error("You need to verificate your phone number!")
+        toast.error("You need to verificate your phone number!");
+      }
+    } else {
+      toast.error("Your Cart is Empty");
+    }
+  },
+  makeOrderByOnline({ number, code, table, deller, cart }) {
+    if (cart) {
+      let data = [];
+      cart.map((item) => {
+        data.push({ foodID: item.food._id, qty: item.qty });
+      });
+      let total = cart.reduce((t, c) => {
+        return t + c.food.price * c.qty;
+      }, 0);
+      if (store.state.user.smsID && code) {
+        axios
+          .post(`/order_by_card`, {
+            table: table,
+            deller: deller,
+            number: number,
+            foods: data,
+            total: total,
+          })
+          .then((res) => {
+            store.commit("user/clearLocalStorage");
+            toast.success("Success");
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
+      } else {
+        toast.error("You need to verificate your phone number!");
       }
     } else {
       toast.error("Your Cart is Empty");

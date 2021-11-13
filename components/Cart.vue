@@ -126,7 +126,13 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red" @click="clearAndClose()"> Cancel </v-btn>
-            <v-btn color="green" @click="submitOrder()"> order </v-btn>
+            <v-btn
+              :disabled="selectedType != null"
+              color="green"
+              @click="submitOrder()"
+            >
+              Order
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -165,13 +171,18 @@ export default {
   },
   methods: {
     submitOrder() {
-      this.$api.orders.makeOrder({
+      let data = {
         number: this.number,
         code: this.code,
         table: this.$route.params.table,
         deller: this.$route.params.id,
         cart: this.$store.state.user.items,
-      });
+      };
+      if (this.selectedType == 2) {
+        this.$api.orders.makeOrderByHande(data);
+      } else if (this.selectedType == 1) {
+        this.$api.orders.makeOrderByOnline(data);
+      }
       this.selectedType = null;
       this.dialog = false;
     },
