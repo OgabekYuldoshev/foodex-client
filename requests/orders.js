@@ -11,7 +11,7 @@ export default (axios, store, toast) => ({
       if (store.state.user.smsID && code) {
         axios
           .post(
-            `/order_by_phone?smsID=${store.state.user.smsID}&code=${code}`,
+            `/order/by_phone?smsID=${store.state.user.smsID}&code=${code}`,
             {
               table: table,
               deller: deller,
@@ -44,7 +44,7 @@ export default (axios, store, toast) => ({
         return t + c.food.price * c.qty;
       }, 0);
       axios
-        .post(`/order_by_card`, {
+        .post(`/order/by_card`, {
           table: table,
           deller: deller,
           number: number,
@@ -64,7 +64,7 @@ export default (axios, store, toast) => ({
   },
   getCode(number) {
     axios
-      .post(`/getCode`, {
+      .post(`/order/getCode`, {
         number: number,
       })
       .then((res) => {
