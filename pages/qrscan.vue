@@ -14,12 +14,9 @@
         @decode="onDecode"
         @init="onInit"
       >
-        <div v-if="validationSuccess" class="validation-success">
-          QR Code is validated !, you need to go to menu!
-        </div>
-
         <div v-if="validationFailure" class="validation-failure">
-          QR Code is not validated !, Please try again ?
+          <span> QR Code is not validated !, Please try again ? </span>
+          <v-btn @click="turnCameraOn" color="red"> Try Again </v-btn>
         </div>
       </qrcode-stream>
       <!-- <qrcode-stream
@@ -29,7 +26,7 @@
         :track="paintOutline"
         @init="onInit"
       ></qrcode-stream> -->
-      <v-btn
+      <!-- <v-btn
         v-if="!tryAgain"
         @click="routeGo"
         :disabled="!result"
@@ -37,11 +34,11 @@
         color="blue"
       >
         Go To Menu
-      </v-btn>
-      <v-btn v-else @click="turnCameraOn" class="mt-5" color="red">
+      </v-btn> -->
+      <!-- <v-btn v-if="tryAgain" @click="turnCameraOn" class="mt-5" color="red">
         Try Again
-      </v-btn>
-      <span style="color: red" class="text-center mt-5">{{ error }}</span>
+      </v-btn> -->
+      <!-- <span style="color: red" class="text-center mt-5">{{ error }}</span> -->
     </div>
   </div>
 </template>
@@ -78,7 +75,7 @@ export default {
       if (window.location.hostname == urlArr) {
         this.turnCameraOff();
         this.isValid = true;
-        this.result = content;
+        this.$router.push(content);
         this.$toast.success("Your QR Code is Validated!");
       } else {
         this.tryAgain = true;
