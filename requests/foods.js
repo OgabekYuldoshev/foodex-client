@@ -21,7 +21,7 @@ export default (axios, store, toast) => ({
   },
   getFoodTypes() {
     axios
-      .get(`/foods/types`)
+      .get(`/foods`)
       .then((res) => {
         store.commit("foods/foodTypes", res.data);
       })
