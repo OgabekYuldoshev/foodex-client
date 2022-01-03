@@ -1,5 +1,5 @@
 export default (axios, store, toast) => ({
-  makeOrderByHand({ number, code, table, deller, cart }) {
+  makeOrderByHand({ number, code, table, deller, cart, payment }) {
     if (cart) {
       let data = [];
       cart.map((item) => {
@@ -16,12 +16,14 @@ export default (axios, store, toast) => ({
               table: table,
               deller: deller,
               number: number,
+              payment: payment,
               foods: data,
               total: total,
             }
           )
           .then((res) => {
             store.commit("user/clearLocalStorage");
+            store.commit("orders/ordered", res?.data);
             toast.success("Success");
           })
           .catch((error) => {
@@ -34,7 +36,7 @@ export default (axios, store, toast) => ({
       toast.error("Your Cart is Empty");
     }
   },
-  makeOrderByOnline({ number, code, table, deller, cart }) {
+  makeOrderByOnline({ number, code, table, deller, cart, payment }) {
     if (cart) {
       let data = [];
       cart.map((item) => {
@@ -48,11 +50,13 @@ export default (axios, store, toast) => ({
           table: table,
           deller: deller,
           number: number,
+          payment: payment,
           foods: data,
           total: total,
         })
         .then((res) => {
           store.commit("user/clearLocalStorage");
+          store.commit("orders/ordered", res?.data);
           toast.success("Success");
         })
         .catch((error) => {

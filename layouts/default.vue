@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -55,6 +55,7 @@
       <v-container fluid>
         <Nuxt />
       </v-container>
+      <SuccessfulOrdered />
     </v-main>
     <v-navigation-drawer
       width="350"
@@ -66,7 +67,10 @@
       <Cart @click.native="right = !right" />
     </v-navigation-drawer>
     <v-footer app>
-      <span>&copy; Created by <a href="https://yuldoshev.vercel.app/">Ogabek Yuldoshev</a></span>
+      <span
+        >&copy; Created by
+        <a href="https://yuldoshev.vercel.app/">Ogabek Yuldoshev</a></span
+      >
     </v-footer>
   </v-app>
 </template>
@@ -75,7 +79,6 @@
 export default {
   data() {
     return {
-      cartLength: 5,
       clipped: false,
       drawer: true,
       items: [
