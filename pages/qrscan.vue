@@ -75,7 +75,7 @@ export default {
       if (window.location.hostname == urlArr) {
         this.turnCameraOff();
         this.isValid = true;
-        this.$router.push(content);
+        window.location.href = content;
         this.$toast.success("Your QR Code is Validated!");
       } else {
         this.tryAgain = true;
