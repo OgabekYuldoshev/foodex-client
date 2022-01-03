@@ -86,7 +86,6 @@
         </template>
         <v-card>
           <v-card-title class="text-h5"> Your Order </v-card-title>
-
           <v-card-text>
             <v-select
               v-model="selectedType"
@@ -175,6 +174,7 @@ export default {
         number: this.number,
         code: this.code,
         table: this.$route.params.table,
+        payment: this.selectedType === 1 ? "online" : "onhande",
         deller: this.$route.params.id,
         cart: this.$store.state.user.items,
       };
