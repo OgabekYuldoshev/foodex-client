@@ -43,7 +43,9 @@ export default {
   },
   methods: {
     download(type) {
-      window.open(`${this.$constants.downloadOrder}/pdf/${this.$store.state.orders.ordered._id}`)
+      window.open(
+        `${this.$constants.downloadOrder}/pdf/${this.$store.state.orders.ordered._id}`
+      );
       this.$store.commit("orders/ordered", null);
     },
   },
