@@ -23,9 +23,12 @@
           receive your order!
         </v-card-text>
         <v-card-actions>
+          <v-btn color="green darken-1" outlined @click="download('png')">
+            Download Image
+          </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="download('pdf')">
-            Download Pdf format
+          <v-btn color="green darken-1" outlined @click="download('pdf')">
+            Download Pdf
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -44,7 +47,7 @@ export default {
   methods: {
     download(type) {
       window.open(
-        `${this.$constants.downloadOrder}/pdf/${this.$store.state.orders.ordered._id}`
+        `${this.$constants.downloadOrder}/${type}/${this.$store.state.orders.ordered._id}`
       );
       this.$store.commit("orders/ordered", null);
     },
