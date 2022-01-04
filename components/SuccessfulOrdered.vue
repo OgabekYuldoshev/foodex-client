@@ -24,12 +24,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="$store.commit('orders/ordered', null)"
-          >
-            Download
+          <v-btn color="green darken-1" text @click="download('pdf')">
+            Download Pdf format
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -43,6 +39,12 @@ export default {
     show() {
       if (this.$store.state.orders.ordered !== null) return true;
       return false;
+    },
+  },
+  methods: {
+    download(type) {
+      window.open(`${this.$constants.downloadOrder}/pdf/${this.$store.state.orders.ordered._id}`)
+      this.$store.commit("orders/ordered", null);
     },
   },
 };
